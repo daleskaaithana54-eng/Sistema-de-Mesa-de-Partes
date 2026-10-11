@@ -1,15 +1,13 @@
 def mostrar_menu():
-    print("\n" + "=" * 45)
+    print("\n" + "=" * 40)
     print("          SISTEMA DE GESTION")
-    print("=" *  45)
-    print("1. Gestion de ventas")
-    print("2. Gestion de ingresos")
-    print("3. Gestion de gastos")
-    print("4. Archivos y reportes")
-    print("5. Resumen general")
-    print("6. Estadistica")
-    print("7. Salir")
-    print("=" * 45)
+    print("=" *  40)
+    print("1. Registrar operaciones de ventas")
+    print("2. Calcular total de ingresos")
+    print("3. Buscar registros")
+    print("4. Leer informacion guardada en archivos y reportes")
+    print("5. Salir del sistema")
+    print("=" * 40)
 
 def ejecutar_menu():
     while True:
@@ -17,26 +15,20 @@ def ejecutar_menu():
 
         opcion = input("Seleccione una opcion:")
         if opcion == "1":
-            print("\nGestion de ventas")
+            print("\nRegistro de operaciones de ventas")
             # Lógica para gestionar ventas
         elif opcion == "2":
-            print("\nGestion de ingresos")
+            print("\nCalculo de totales de ingresos")
             # Lógica para gestionar ingresos
         elif opcion == "3":
-            print("\nGestion de gastos")
+            print("\nBusqueda de registros")
             # Lógica para gestionar gastos
         elif opcion == "4":
-            print("\nArchivos y reportes")
+            print("\nLectura de informacion guardada en archivos y reportes")
             # Lógica para gestionar archivos y reportes
         elif opcion == "5":
-            print("\nResumen general")
-            # Lógica para mostrar resumen general
-        elif opcion == "6":
-            print("Estadistica")
-            # Lógica para mostrar estadisticas
-        elif opcion == "7":
             print("\nSaliendo del sistema...")
+            # Lógica para mostrar resumen general
             break
         else:
             print("\nOpción no valida. Por favor, intente nuevamente.")
-ejecutar_menu()
