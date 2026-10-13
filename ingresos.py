@@ -1,1 +1,72 @@
-#Modulo de ingresos
+# Modulo de ingresos
+def seleccionar_tipo_ingreso():
+    tipos = ["Sueldo", "Venta", "Otros"]
+
+    print("Tipos de ingreso:")
+    for i in range(len(tipos)):
+        print(f"{i + 1}. {tipos[i]}")
+
+    opcion = int(input("Elige un tipo: "))
+    while opcion < 1 or opcion > len(tipos):
+        opcion = int(input("Opcion invalida. Elige un tipo: "))
+
+    return tipos[opcion - 1]
+
+
+def registrar_ingreso(ingresos):
+    tipo = seleccionar_tipo_ingreso()
+
+    monto = float(input("Monto: S/ "))
+    while monto <= 0:
+        monto = float(input("El monto debe ser mayor que 0. Monto: S/ "))
+
+    descripcion = input("Descripcion: ")
+
+    ingreso = {"tipo": tipo, "monto": monto, "descripcion": descripcion}
+    ingresos.append(ingreso)
+    print("Ingreso registrado.")
+
+
+def calcular_total_ingresos(ingresos):
+    total = 0
+    for ingreso in ingresos:
+        total = total + ingreso["monto"]
+    return total
+
+
+def consultar_ingresos(ingresos):
+    if len(ingresos) == 0:
+        print("No hay ingresos registrados.")
+    else:
+        print("--- Ingresos registrados ---")
+        for i in range(len(ingresos)):
+            ingreso = ingresos[i]
+            print(f"{i + 1}. {ingreso['tipo']} - S/ {ingreso['monto']} - {ingreso['descripcion']}")
+        print(f"Total: S/ {calcular_total_ingresos(ingresos)}")
+
+
+def buscar_ingreso(ingresos):
+    print("Buscar por tipo de ingreso")
+    tipo = seleccionar_tipo_ingreso()
+
+    encontrados = []
+    for ingreso in ingresos:
+        if ingreso["tipo"] == tipo:
+            encontrados.append(ingreso)
+
+    if len(encontrados) == 0:
+        print("No se encontraron ingresos de ese tipo.")
+    else:
+        for ingreso in encontrados:
+            print(f"{ingreso['tipo']} - S/ {ingreso['monto']} - {ingreso['descripcion']}")
+
+    return encontrados
+
+
+if __name__ == "__main__":
+    lista_ingresos = []
+    registrar_ingreso(lista_ingresos)
+    registrar_ingreso(lista_ingresos)
+    consultar_ingresos(lista_ingresos)
+    buscar_ingreso(lista_ingresos)
+    
