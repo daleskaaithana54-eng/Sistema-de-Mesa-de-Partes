@@ -1,3 +1,9 @@
+from ventas import menu_ventas
+from ingresos import registrar_ingreso, calcular_total_ingresos, consultar_ingresos, buscar_ingreso
+
+ingresos = []
+
+
 def mostrar_menu():
     print("\n" + "=" * 40)
     print("          SISTEMA DE GESTION")
@@ -15,24 +21,43 @@ def ejecutar_menu():
 
         opcion = input("Seleccione una opcion:")
         if opcion == "1":
-            print("\nRegistro de operaciones de ventas")
-            print("opcion seleccionada correctamente")
-            # Solicita los datos necesarios para registrar una operación de venta y los almacena en el sistema
+            menu_ventas()
+            
         elif opcion == "2":
-            print("\nCalculo de totales de ingresos")
-            print("opcion seleccionada correctamente")
-            # Permite calcular el total de ingresos generados por las ventas
+            while True:
+                print("\nMENU DE INGRESOS")
+                print("1. Registrar ingreso")
+                print("2. Consultar ingresos")
+                print("3. Buscar ingresos")
+                print("4. Regresar al menu principal")
+
+                opcion_ingreso = input("Seleccione una opcion:")
+
+                if opcion_ingreso == "1":
+                    registrar_ingreso(ingresos)
+                elif opcion_ingreso == "2":
+                    consultar_ingresos(ingresos)
+                elif opcion_ingreso == "3":
+                    buscar_ingreso(ingresos)
+                    
+                elif opcion_ingreso == "4":
+                    break
+                else:
+                    print("Opción no valida.")
         elif opcion == "3":
-            print("\nBusqueda de registros")
-            print("opcion seleccionada correctamente")
-            # Permite buscar informacion de las operaciones de ventas registradas
+            print("\nBUSQUEDA DE REGISTROS")
+            buscar_ingreso(ingresos)
+            
         elif opcion == "4":
             print("\nLectura de informacion guardada en archivos y reportes")
-            print("opcion seleccionada correctamente")
-            # Permite consultar la informacion guardada en archivos y reportes generados por el sistema
+            print("Esta opcion se conectara con el modulo de reportes")
+            
         elif opcion == "5":
             print("\nSaliendo del sistema...")
-            # Finaliza la ejecucion del programa
+            
             break
         else:
             print("\nOpción no valida. Por favor, intente nuevamente.")
+
+if __name__ == "__main__":
+    ejecutar_menu()
