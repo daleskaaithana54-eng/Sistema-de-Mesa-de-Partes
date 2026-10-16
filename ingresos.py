@@ -5,9 +5,10 @@ def seleccionar_tipo_ingreso():
     for i in range(len(tipos)):
         print(f"{i + 1}. {tipos[i]}")
 
-    opcion = int(input("Elige un tipo: "))
-    while opcion < 1 or opcion > len(tipos):
-        opcion = int(input("Opcion invalida. Elige un tipo: "))
+    texto = input("Elige un tipo: ").strip()
+    while not texto.isdigit() or int(texto) < 1 or int(texto) > len(tipos):
+        texto = input("Opcion invalida. Elige un tipo: ").strip()
+    opcion = int(texto)
 
     return tipos[opcion - 1]
 
