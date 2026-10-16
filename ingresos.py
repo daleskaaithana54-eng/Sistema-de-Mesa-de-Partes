@@ -16,9 +16,10 @@ def seleccionar_tipo_ingreso():
 def registrar_ingreso(ingresos):
     tipo = seleccionar_tipo_ingreso()
 
-    monto = float(input("Monto: S/ "))
-    while monto <= 0:
-        monto = float(input("El monto debe ser mayor que 0. Monto: S/ "))
+    texto_monto = input("Monto: S/ ").strip()
+    while not texto_monto.replace(".", "", 1).isdigit() or float(texto_monto) <= 0:
+        texto_monto = input("Monto invalido (debe ser un numero mayor que 0). Monto: S/ ").strip()
+    monto = float(texto_monto)
 
     descripcion = input("Descripcion: ").strip()
     while len(descripcion) == 0:
