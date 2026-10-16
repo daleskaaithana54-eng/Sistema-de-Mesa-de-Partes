@@ -49,16 +49,27 @@ def consultar_ingresos(ingresos):
 
 
 def buscar_ingreso(ingresos):
-    print("Buscar por tipo de ingreso")
-    tipo = seleccionar_tipo_ingreso()
+    print("Buscar ingresos")
+    print("1. Por tipo")
+    print("2. Por descripcion")
+    criterio = input("Elige una opcion: ").strip()
+    while criterio != "1" and criterio != "2":
+        criterio = input("Opcion invalida. Elige 1 o 2: ").strip()
 
     encontrados = []
-    for ingreso in ingresos:
-        if ingreso["tipo"] == tipo:
-            encontrados.append(ingreso)
+    if criterio == "1":
+        tipo = seleccionar_tipo_ingreso()
+        for ingreso in ingresos:
+            if ingreso["tipo"] == tipo:
+                encontrados.append(ingreso)
+    else:
+        texto = input("Texto a buscar: ").strip().lower()
+        for ingreso in ingresos:
+            if ingreso["descripcion"].lower().find(texto) != -1:
+                encontrados.append(ingreso)
 
     if len(encontrados) == 0:
-        print("No se encontraron ingresos de ese tipo.")
+        print("No se encontraron ingresos.")
     else:
         for ingreso in encontrados:
             print(f"{ingreso['tipo']} - S/ {ingreso['monto']} - {ingreso['descripcion']}")
