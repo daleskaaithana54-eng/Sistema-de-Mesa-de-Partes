@@ -1,5 +1,3 @@
-# Modulo de ingresos
-
 def seleccionar_tipo_ingreso():
     tipos = ["Sueldo", "Venta", "Otros"]
 
@@ -18,11 +16,12 @@ def registrar_ingreso(ingresos):
     tipo = seleccionar_tipo_ingreso()
 
     monto = float(input("Monto: S/ "))
-    # El monto debe ser mayor que cero
     while monto <= 0:
         monto = float(input("El monto debe ser mayor que 0. Monto: S/ "))
 
-    descripcion = input("Descripcion: ")
+    descripcion = input("Descripcion: ").strip()
+    while len(descripcion) == 0:
+        descripcion = input("La descripcion no puede estar vacia. Descripcion: ").strip()
 
     ingreso = {"tipo": tipo, "monto": monto, "descripcion": descripcion}
     ingresos.append(ingreso)
@@ -71,3 +70,4 @@ if __name__ == "__main__":
     registrar_ingreso(lista_ingresos)
     consultar_ingresos(lista_ingresos)
     buscar_ingreso(lista_ingresos)
+    
