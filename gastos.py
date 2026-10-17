@@ -85,7 +85,21 @@ def buscar_gasto():
 
     total = sum(gasto["monto"] for gasto in encontrados)
     print(f"Total encontrado: S/ {total:.2f}")
+def mostrar_resumen_gastos():
+    print("\n--- RESUMEN DE GASTOS ---")
 
+    cantidad = len(gastos)
+
+    if cantidad == 0:
+        print("No hay gastos registrados para generar el resumen.")
+        return
+
+    total = calcular_total_gastos()
+    promedio = total / cantidad
+
+    print(f"Cantidad de gastos: {cantidad}")
+    print(f"Total acumulado: S/ {total:.2f}")
+    print(f"Promedio por gasto: S/ {promedio:.2f}")
 def menu_gastos():
     while True:
         print("\n--- MENU DE GASTOS ---")
@@ -186,6 +200,40 @@ class TestModuloGastos(unittest.TestCase):
         buscar_gasto()
 
         self.assertEqual(len(gastos), 1)
+    def test_resumen_con_gastos(self):
+        gastos.extend([
+            {"descripcion": "Pasajes", "monto": 12.50},
+            {"descripcion": "Materiales", "monto": 7.50}
+        ])
+
+        with patch("builtins.print") as mock_print:
+            mostrar_resumen_gastos()
+
+        mensajes = [
+            llamada.args[0]
+            for llamada in mock_print.call_args_list
+            if llamada.args
+        ]
+
+        self.assertIn("Cantidad de gastos: 2", mensajes)
+        self.assertIn("Total acumulado: S/ 20.00", mensajes)
+        self.assertIn("Promedio por gasto: S/ 10.00", mensajes)
+
+    def test_resumen_sin_gastos(self):
+        with patch("builtins.print") as mock_print:
+            mostrar_resumen_gastos()
+
+        mensajes = [
+            llamada.args[0]
+            for llamada in mock_print.call_args_list
+            if llamada.args
+        ]
+
+        self.assertIn(
+            "No hay gastos registrados para generar el resumen.",
+            mensajes
+        )
+
 if __name__ == "__main__":
     import sys
 
