@@ -53,7 +53,38 @@ def calcular_total_gastos():
         total += gasto["monto"]
 
     return total
+def buscar_gasto():
+    print("\n--- BUSCAR GASTO ---")
 
+    if not gastos:
+        print("No hay gastos registrados.")
+        return
+
+    busqueda = input(
+        "Ingrese la descripcion que desea buscar: "
+    ).strip().lower()
+
+    if not busqueda:
+        print("Error: la busqueda no puede estar vacia.")
+        return
+
+    encontrados = [
+        gasto for gasto in gastos
+        if busqueda in gasto["descripcion"].lower()
+    ]
+
+    if not encontrados:
+        print("No se encontraron gastos con esa descripcion.")
+        return
+
+    print("\n--- RESULTADOS DE LA BUSQUEDA ---")
+
+    for i, gasto in enumerate(encontrados, start=1):
+        print(f"{i}. Descripcion: {gasto['descripcion']}")
+        print(f"   Monto: S/ {gasto['monto']:.2f}")
+
+    total = sum(gasto["monto"] for gasto in encontrados)
+    print(f"Total encontrado: S/ {total:.2f}")
 
 def menu_gastos():
     while True:
@@ -129,7 +160,32 @@ class TestModuloGastos(unittest.TestCase):
     def test_total_sin_gastos(self):
         self.assertEqual(calcular_total_gastos(), 0)
 
+    @patch("builtins.input", side_effect=["pas"])
+    def test_buscar_gasto_por_coincidencia(self, mock_input):
+        gastos.extend([
+            {"descripcion": "Pasajes", "monto": 12.50},
+            {"descripcion": "Materiales", "monto": 7.50}
+        ])
 
+        buscar_gasto()
+
+        self.assertEqual(len(gastos), 2)
+
+    @patch("builtins.input", side_effect=[""])
+    def test_buscar_gasto_con_busqueda_vacia(self, mock_input):
+        gastos.append({"descripcion": "Pasajes", "monto": 12.50})
+
+        buscar_gasto()
+
+        self.assertEqual(len(gastos), 1)
+
+    @patch("builtins.input", side_effect=["comida"])
+    def test_buscar_gasto_sin_coincidencias(self, mock_input):
+        gastos.append({"descripcion": "Pasajes", "monto": 12.50})
+
+        buscar_gasto()
+
+        self.assertEqual(len(gastos), 1)
 if __name__ == "__main__":
     import sys
 
