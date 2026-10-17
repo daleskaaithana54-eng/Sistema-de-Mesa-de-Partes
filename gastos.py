@@ -53,8 +53,53 @@ def calcular_total_gastos():
         total += gasto["monto"]
 
     return total
+def buscar_gasto():
+    print("\n--- BUSCAR GASTO ---")
 
+    if not gastos:
+        print("No hay gastos registrados.")
+        return
 
+    busqueda = input(
+        "Ingrese la descripcion que desea buscar: "
+    ).strip().lower()
+
+    if not busqueda:
+        print("Error: la busqueda no puede estar vacia.")
+        return
+
+    encontrados = [
+        gasto for gasto in gastos
+        if busqueda in gasto["descripcion"].lower()
+    ]
+
+    if not encontrados:
+        print("No se encontraron gastos con esa descripcion.")
+        return
+
+    print("\n--- RESULTADOS DE LA BUSQUEDA ---")
+
+    for i, gasto in enumerate(encontrados, start=1):
+        print(f"{i}. Descripcion: {gasto['descripcion']}")
+        print(f"   Monto: S/ {gasto['monto']:.2f}")
+
+    total = sum(gasto["monto"] for gasto in encontrados)
+    print(f"Total encontrado: S/ {total:.2f}")
+def mostrar_resumen_gastos():
+    print("\n--- RESUMEN DE GASTOS ---")
+
+    cantidad = len(gastos)
+
+    if cantidad == 0:
+        print("No hay gastos registrados para generar el resumen.")
+        return
+
+    total = calcular_total_gastos()
+    promedio = total / cantidad
+
+    print(f"Cantidad de gastos: {cantidad}")
+    print(f"Total acumulado: S/ {total:.2f}")
+    print(f"Promedio por gasto: S/ {promedio:.2f}")
 def menu_gastos():
     while True:
         print("\n--- MENU DE GASTOS ---")
@@ -129,6 +174,65 @@ class TestModuloGastos(unittest.TestCase):
     def test_total_sin_gastos(self):
         self.assertEqual(calcular_total_gastos(), 0)
 
+    @patch("builtins.input", side_effect=["pas"])
+    def test_buscar_gasto_por_coincidencia(self, mock_input):
+        gastos.extend([
+            {"descripcion": "Pasajes", "monto": 12.50},
+            {"descripcion": "Materiales", "monto": 7.50}
+        ])
+
+        buscar_gasto()
+
+        self.assertEqual(len(gastos), 2)
+
+    @patch("builtins.input", side_effect=[""])
+    def test_buscar_gasto_con_busqueda_vacia(self, mock_input):
+        gastos.append({"descripcion": "Pasajes", "monto": 12.50})
+
+        buscar_gasto()
+
+        self.assertEqual(len(gastos), 1)
+
+    @patch("builtins.input", side_effect=["comida"])
+    def test_buscar_gasto_sin_coincidencias(self, mock_input):
+        gastos.append({"descripcion": "Pasajes", "monto": 12.50})
+
+        buscar_gasto()
+
+        self.assertEqual(len(gastos), 1)
+    def test_resumen_con_gastos(self):
+        gastos.extend([
+            {"descripcion": "Pasajes", "monto": 12.50},
+            {"descripcion": "Materiales", "monto": 7.50}
+        ])
+
+        with patch("builtins.print") as mock_print:
+            mostrar_resumen_gastos()
+
+        mensajes = [
+            llamada.args[0]
+            for llamada in mock_print.call_args_list
+            if llamada.args
+        ]
+
+        self.assertIn("Cantidad de gastos: 2", mensajes)
+        self.assertIn("Total acumulado: S/ 20.00", mensajes)
+        self.assertIn("Promedio por gasto: S/ 10.00", mensajes)
+
+    def test_resumen_sin_gastos(self):
+        with patch("builtins.print") as mock_print:
+            mostrar_resumen_gastos()
+
+        mensajes = [
+            llamada.args[0]
+            for llamada in mock_print.call_args_list
+            if llamada.args
+        ]
+
+        self.assertIn(
+            "No hay gastos registrados para generar el resumen.",
+            mensajes
+        )
 
 if __name__ == "__main__":
     import sys
