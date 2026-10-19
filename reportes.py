@@ -1,4 +1,4 @@
-#Modulo de archivos y reportes
+﻿#Modulo de archivos y reportes
 
 # Contar palabras del archivo
 def contar_palabras():
@@ -149,3 +149,52 @@ def menu_reportes():
             break
         else:
             print("Opcion no valida.")
+
+# Pruebas automatizadas
+import unittest
+from unittest.mock import patch, mock_open
+
+
+class TestReportes(unittest.TestCase):
+
+    @patch("builtins.open", mock_open(read_data="Hola mundo desde Python"))
+    @patch("builtins.print")
+    def test_contar_palabras(self, imprimir):
+        contar_palabras()
+        imprimir.assert_any_call("Cantidad de palabras:", 4)
+
+    @patch("builtins.open", mock_open(read_data="Primera linea\nSegunda linea\n"))
+    @patch("builtins.print")
+    def test_contar_lineas(self, imprimir):
+        contar_lineas()
+        imprimir.assert_any_call("Cantidad de lineas:", 2)
+
+    @patch("builtins.open", mock_open(read_data="Hola"))
+    @patch("builtins.print")
+    def test_contar_caracteres(self, imprimir):
+        contar_caracteres()
+        imprimir.assert_any_call("Cantidad de caracteres:", 4)
+
+    @patch("builtins.open", mock_open(read_data="Hola mundo, hola Python"))
+    @patch("builtins.input", return_value="hola")
+    @patch("builtins.print")
+    def test_contar_coincidencias(self, imprimir, entrada):
+        contar_busqueda()
+        imprimir.assert_any_call("Veces que aparece la palabra:", 2)
+
+    @patch("builtins.input", return_value="")
+    @patch("builtins.print")
+    def test_busqueda_vacia(self, imprimir, entrada):
+        contar_busqueda()
+        imprimir.assert_any_call("Debe ingresar una palabra.")
+
+    @patch("builtins.open", mock_open(read_data="Hola mundo\nPython"))
+    @patch("builtins.print")
+    def test_resumen_completo(self, imprimir):
+        resumen_completo()
+        imprimir.assert_any_call("Total de palabras:", 3)
+
+
+if __name__ == "__main__":
+    unittest.main()
+
