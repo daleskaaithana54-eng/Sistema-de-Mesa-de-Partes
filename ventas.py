@@ -15,10 +15,16 @@ def calcular_total(subtotal,descuento):
 def registrar_venta():
     print("\nREGISTRAR VENTA")
 
-    codigo=input("Ingrese codigo de venta:")
-    producto=input("Ingrese producto:")
-    precio=float(input("Ingrese precio: S/ "))
-    cantidad=int(input("Ingrese cantidad: "))
+    codigo=input("Ingrese el codigo del producto:")
+    producto=input("Ingrese el nombre delproducto:")
+    precio=float(input("Ingrese el precio del producto: "))
+    while precio <= 0:
+        print("El precio debe ser mayor a cero")
+        precio=float(input("Ingrese el precio del producto: "))
+    cantidad=int(input("Ingrese la cantidad: "))
+    while cantidad <= 0:
+        print("La cantidad debe ser mayor a cero")
+        cantidad=int(input("Ingrese la cantidad: "))
     porcentaje= float(input("Ingrese descuento (%): "))
     subtotal=calcular_subtotal(precio,cantidad)
     descuento=aplicar_descuento(subtotal,porcentaje)
@@ -37,30 +43,33 @@ def registrar_venta():
     ventas.append(venta)
     
     print("\nVenta registrada correctamente")
-    print("Subtotal: S/", subtotal)
-    print("Descuento: S/", descuento)
-    print("Total: S/", total)
+    print("Producto:", producto)
+    print("Subtotal: S/", round(subtotal, 2))
+    print("Descuento: S/", round(descuento, 2))
 
-def consultar_ventas():
-    print("\nVENTAS REGISTRADAS")
+    print("Total: S/", round(total, 2))
+
+def mostrar_ventas():
+    print("\nLista de ventas")
 
     if len(ventas) == 0:
        print("No hay ventas registradas.")
-       return
-    for venta in ventas:
+    else:
+        for venta in ventas:
+     
+            print("\nCodigo:", venta["codigo"])
+            print("Producto:", venta["producto"])
+            print("Precio: S/", venta["precio"])
+            print("Cantidad:", venta["cantidad"])
+            print("Subtotal: S/", round (venta["subtotal"], 2))
+            print("Descuento: S/", round (venta["descuento"], 2))
+            print("Total: S/", round (venta["total"], 2))
 
-        print("\nCodigo:", venta["codigo"])
-        print("Producto:", venta["producto"])
-        print("Precio: S/", venta["precio"])
-        print("Cantidad:", venta["cantidad"])
-        print("Subtotal: S/", venta["subtotal"])
-        print("Descuento: S/", venta["descuento"])
-        print("Total: S/", venta["total"])
 def menu_ventas():
         while True:
             print("\nMENU DE VENTAS")
             print("1. Registrar venta")
-            print("2. Consultar ventas")
+            print("2. Mostrar ventas")
             print("3. Regresar al menu principal")
 
             opcion = input("Seleccione una opcion:")
@@ -69,13 +78,13 @@ def menu_ventas():
                 registrar_venta()
 
             elif opcion == "2":
-                consultar_ventas()
+                mostrar_ventas()
 
             elif opcion == "3":
                 break
 
             else:
-                print("Opcion invalida.")
+                print("Opcion invalida. Intente nuevamente.")
 
 if __name__ == "__main__":
     menu_ventas()
