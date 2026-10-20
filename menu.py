@@ -6,6 +6,16 @@ from ingresos import (
     buscar_ingreso
 )
 from gastos import menu_gastos
+from reportes import (
+    contar_palabras,
+    contar_lineas,
+    contar_caracteres,
+    contar_busqueda,
+    resumen_completo,
+    guardar_resumen,
+    verificar_palabra
+
+)
 
 
 #Lista para guardar los ingresos durante la ejecucion
@@ -48,6 +58,39 @@ def menu_ingresos():
         else:
             print("Opción no valida.")
 
+def menu_reportes():
+    while True:
+        print("\nMENU DE ARCHIVOS Y REPORTES")
+        print("1. Contar palabras")
+        print("2. Contar lineas")
+        print("3. Contar caracteres")
+        print("4. Buscar coincidencias de una palabra")
+        print("5. Mostrar resumen completo")
+        print("6. Guardar resumen")
+        print("7. Verificar existencia de una palabra")
+        print("8. Regresar al menu principal")
+
+        opcion = input("Seleccione una opcion:")
+
+        if opcion == "1":
+            contar_palabras()
+        elif opcion == "2":
+            contar_lineas()
+        elif opcion == "3":
+            contar_caracteres()
+        elif opcion == "4":
+            contar_busqueda()
+        elif opcion == "5":
+            resumen_completo()
+        elif opcion == "6":
+            guardar_resumen()
+        elif opcion == "7":
+            verificar_palabra()
+        elif opcion == "8":
+            break
+        else:
+            print("Opción no valida.")
+
 def ejecutar_menu():
     while True:
         mostrar_menu()
@@ -61,9 +104,11 @@ def ejecutar_menu():
         elif opcion == "3":
             menu_gastos()
         elif opcion == "4":
+            menu_reportes()
+        elif opcion == "5":
             print("\nBUSQUEDA DE REGISTROS")
             buscar_ingreso(ingresos)
-        elif opcion == "5":
+        elif opcion == "6":
             print("\nSaliendo del sistema...")
             break
         else:
