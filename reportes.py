@@ -80,3 +80,7 @@ if __name__ == "__main__":
     generar_resumen()
     mostrar_estadisticas()
 
+
+def contar_palabras(texto):
+    palabras = texto.split()
+    return len(palabras)
