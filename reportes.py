@@ -84,3 +84,8 @@ if __name__ == "__main__":
 def contar_palabras(texto):
     palabras = texto.split()
     return len(palabras)
+
+
+def contar_lineas(texto):
+    lineas = texto.splitlines()
+    return len(lineas)
